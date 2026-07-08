@@ -654,7 +654,7 @@ let storageOK=false;
 try{ localStorage.setItem("__t","1"); localStorage.removeItem("__t"); storageOK=true; }catch(e){}
 
 function load(){
-  const base = {xp:0, done:{}, streak:0, lastDay:null, badges:{}};
+  const base = {xp:0, done:{}, streak:0, lastDay:null, badges:{}, drafts:{}};
   try{
     const raw = localStorage.getItem(SAVE_KEY);
     if(raw){ return Object.assign(base, JSON.parse(raw)); }
@@ -710,6 +710,7 @@ function touchStreak(){
    ================================================================ */
 const app=document.getElementById("app");
 let view={name:"home"};
+let draftTimer=null;
 
 function renderHeader(){
   const L=levelInfo();
@@ -795,6 +796,10 @@ function renderWorld(id){
 
 function renderLevel(id,i){
   const w=worldObj(id); const lv=w.levels[i];
+  /* brouillon sauvegardé pour cet exercice ? on le restaure à la place
+     du code de départ (lv.defi.start) — sinon on repart de zéro à chaque fois */
+  const draft=(state.drafts||{})[id+"_"+i];
+  const startCode=(draft!=null) ? draft : (lv.defi.start||"");
   let defiHTML="";
   if(lv.defi.type==="quiz"){
     defiHTML=`<div class="defi">
@@ -807,7 +812,7 @@ function renderLevel(id,i){
     defiHTML=`<div class="defi">
       <div class="lab">🎯 Défi code</div>
       <div class="q">${lv.defi.q}</div>
-      <textarea class="editor" id="ed">${esc(lv.defi.start||"")}</textarea>
+      <textarea class="editor" id="ed" oninput="onEditorInput('${id}',${i})">${esc(startCode)}</textarea>
       <div class="runrow">
         <button class="btn ghost" onclick="runCode()">▶ Tester</button>
         <button class="btn primary" onclick="checkCode()">✓ Valider le défi</button>
@@ -819,7 +824,7 @@ function renderLevel(id,i){
     defiHTML=`<div class="defi">
       <div class="lab">✍️ Exercice à écrire</div>
       <div class="q">${lv.defi.q}</div>
-      <textarea class="editor" id="ed">${esc(lv.defi.start||"")}</textarea>
+      <textarea class="editor" id="ed" oninput="onEditorInput('${id}',${i})">${esc(startCode)}</textarea>
       <div class="runrow">
         <button class="btn ghost" onclick="revealSol()">💡 Voir la solution</button>
         <button class="btn primary" onclick="win()">✓ J'ai réussi</button>
@@ -839,10 +844,35 @@ function renderLevel(id,i){
 /* ================================================================
    INTERACTIONS
    ================================================================ */
-function goHome(){ view={name:"home"}; render(); }
-function goWorld(id){ view={name:"world", world:id}; render(); }
+function goHome(){ flushDraft(); view={name:"home"}; render(); }
+function goWorld(id){ flushDraft(); view={name:"world", world:id}; render(); }
 function goLevel(id,i){ renderLevel(id,i); }
-function goCourse(id){ view={name:"course", world: id || view.world || GAME.worlds[0].id}; render(); }
+function goCourse(id){ flushDraft(); view={name:"course", world: id || view.world || GAME.worlds[0].id}; render(); }
+
+/* ---------- BROUILLON ÉDITEUR (anti-perte de progression) ---------- */
+/* écrit à chaque frappe, mais avec un debounce : on attend 500ms sans
+   frappe avant d'écrire dans localStorage, pour ne pas spammer save() */
+function onEditorInput(id,i){
+  clearTimeout(draftTimer);
+  draftTimer=setTimeout(()=>{
+    const el=document.getElementById("ed");
+    if(!el) return;
+    if(!state.drafts) state.drafts={};
+    state.drafts[id+"_"+i]=el.value;
+    save();
+  }, 500);
+}
+/* filet de sécurité : si on quitte le niveau avant les 500ms du debounce
+   (ex: clic rapide sur "← Monde"), on sauvegarde quand même tout de suite */
+function flushDraft(){
+  clearTimeout(draftTimer);
+  const el=document.getElementById("ed");
+  if(el && view.name==="level"){
+    if(!state.drafts) state.drafts={};
+    state.drafts[view.world+"_"+view.i]=el.value;
+    save();
+  }
+}
 
 function renderCourse(activeId){
   if(!activeId || !worldObj(activeId)) activeId=GAME.worlds[0].id;
@@ -957,14 +987,14 @@ function importSave(){
   try{
     const s=prompt("Colle ici ton code de sauvegarde :");
     if(s && s.trim()){
-      state=Object.assign({xp:0,done:{},streak:0,lastDay:null,badges:{}}, JSON.parse(s.trim()));
+      state=Object.assign({xp:0,done:{},streak:0,lastDay:null,badges:{},drafts:{}}, JSON.parse(s.trim()));
       save(); goHome(); alert("✅ Progression restaurée !");
     }
   }catch(e){ alert("Code invalide, réessaie."); }
 }
 function resetGame(){
   if(confirm("Remettre toute ta progression à zéro ?")){
-    state={xp:0,done:{},streak:0,lastDay:null,badges:{}}; save(); goHome();
+    state={xp:0,done:{},streak:0,lastDay:null,badges:{},drafts:{}}; save(); goHome();
   }
 }
 
