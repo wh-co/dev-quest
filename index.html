@@ -313,7 +313,9 @@ GET /formation HTTP/1.1
     <h2>À toi de jouer 🎯</h2>
     <p>Écris du HTML dans la zone noire, clique <b>Tester</b>, et regarde le résultat s'afficher en dessous. Essaie d'ajouter un titre <code class="inl">&lt;h1&gt;</code> et un paragraphe <code class="inl">&lt;p&gt;</code>.</p>
     <div class="callout c-ana"><span class="lab">🧠 Comme Shopify</span>
-    Tu te souviens quand tu modifiais un thème ? C'était déjà ça, du HTML. Là tu l'écris toi-même, de zéro.</div>`,
+    Tu te souviens quand tu modifiais un thème ? C'était déjà ça, du HTML. Là tu l'écris toi-même, de zéro.</div>
+    <div class="callout c-warn"><span class="lab">⚠️ Erreur à éviter</span>
+    Une balise ouverte sans sa fermante (<code class="inl">&lt;h1&gt;</code> sans <code class="inl">&lt;/h1&gt;</code>) peut décaler ou casser l'affichage de tout ce qui suit. Vérifie toujours que chaque balise a bien son couple ouvrant/fermant.</div>`,
     defi:{type:"code", q:"Objectif : ta page doit contenir un titre &lt;h1&gt; ET un paragraphe &lt;p&gt;.",
       start:"<h1>Salut, moi c'est Wassim</h1>\n<p>Je deviens développeur.</p>",
       check:(v)=> /<h1>[\s\S]*<\/h1>/i.test(v) && /<p>[\s\S]*<\/p>/i.test(v),
@@ -327,11 +329,38 @@ GET /formation HTTP/1.1
   <span class="tg">&lt;li&gt;</span>Pain<span class="tg">&lt;/li&gt;</span>
   <span class="tg">&lt;li&gt;</span>Lait<span class="tg">&lt;/li&gt;</span>
 <span class="tg">&lt;/ul&gt;</span></pre>
-    <div class="callout c-key"><span class="lab">🔑 Point clé</span> ul = la liste, li = un élément. Chaque &lt;li&gt; a besoin de sa balise fermante.</div>`,
+    <div class="callout c-key"><span class="lab">🔑 Point clé</span> ul = la liste, li = un élément. Chaque &lt;li&gt; a besoin de sa balise fermante.</div>
+    <div class="callout c-warn"><span class="lab">⚠️ Erreur à éviter</span>
+    Un texte écrit directement dans <code class="inl">&lt;ul&gt;</code> sans <code class="inl">&lt;li&gt;</code> autour ne s'affichera pas comme un élément de liste. Chaque ligne DOIT être encapsulée dans son propre <code class="inl">&lt;li&gt;...&lt;/li&gt;</code>.</div>`,
     defi:{type:"code", q:"Ajoute au moins 3 &lt;li&gt; à l'intérieur de la liste &lt;ul&gt;.",
       start:"<h2>Ma liste de courses</h2>\n<ul>\n  <li>Pain</li>\n</ul>",
       check:(v)=> /<ul>[\s\S]*<\/ul>/i.test(v) && (v.match(/<li>/gi)||[]).length>=3,
       expl:"Une &lt;ul&gt; = liste à puces ; chaque &lt;li&gt; = un élément de la liste."} },
+
+  { titre:"Listes numérotées & imbriquées",
+    lecon:`<span class="kicker" style="color:#f97316">HTML — pratique avancée</span>
+    <h2>Aller plus loin avec les listes</h2>
+    <p>Deux variantes utiles : <code class="inl">&lt;ol&gt;</code> (liste <b>numérotée</b>, "ordered list") au lieu de <code class="inl">&lt;ul&gt;</code>. Et une liste peut en contenir une autre : on dit qu'elle est <b>imbriquée</b>.</p>
+    <pre class="code"><span class="tg">&lt;ol&gt;</span>
+  <span class="tg">&lt;li&gt;</span>Ouvrir le compte<span class="tg">&lt;/li&gt;</span>
+  <span class="tg">&lt;li&gt;</span>Choisir un pseudo<span class="tg">&lt;/li&gt;</span>
+<span class="tg">&lt;/ol&gt;</span>
+
+<span class="tg">&lt;ul&gt;</span>
+  <span class="tg">&lt;li&gt;</span>Fruits
+    <span class="tg">&lt;ul&gt;</span>
+      <span class="tg">&lt;li&gt;</span>Pomme<span class="tg">&lt;/li&gt;</span>
+    <span class="tg">&lt;/ul&gt;</span>
+  <span class="tg">&lt;/li&gt;</span>
+<span class="tg">&lt;/ul&gt;</span></pre>
+    <div class="callout c-key"><span class="lab">🔑 Point clé</span>
+    <code class="inl">&lt;ol&gt;</code> = numérotée (1. 2. 3.), <code class="inl">&lt;ul&gt;</code> = à puces. Une liste imbriquée se place ENTIÈREMENT à l'intérieur d'un <code class="inl">&lt;li&gt;</code> parent.</div>
+    <div class="callout c-warn"><span class="lab">⚠️ Erreur à éviter</span>
+    Une liste imbriquée doit rester DANS le <code class="inl">&lt;li&gt;</code> parent, avant sa balise <code class="inl">&lt;/li&gt;</code> fermante — pas après. Sinon elle sort de l'élément et casse la hiérarchie.</div>`,
+    defi:{type:"code", q:"Transforme ta liste en liste NUMÉROTÉE (&lt;ol&gt;), OU ajoute une sous-liste &lt;ul&gt; imbriquée dans un de tes &lt;li&gt;.",
+      start:"<h2>Étapes du matin</h2>\n<ul>\n  <li>Se lever</li>\n  <li>Petit-déjeuner</li>\n</ul>",
+      check:(v)=> /<ol>[\s\S]*<\/ol>/i.test(v) || /<li>[\s\S]*?<ul>[\s\S]*?<\/ul>[\s\S]*?<\/li>/i.test(v),
+      expl:"&lt;ol&gt; numérote automatiquement chaque élément. Une liste imbriquée (une &lt;ul&gt; dans un &lt;li&gt;) sert à représenter une hiérarchie, comme un sommaire."} },
 
   { titre:"Liens & images",
     lecon:`<span class="kicker" style="color:#f97316">HTML — pratique</span>
@@ -339,17 +368,90 @@ GET /formation HTTP/1.1
     <p>Un lien cliquable : <code class="inl">&lt;a href="..."&gt;texte&lt;/a&gt;</code>. Une image : <code class="inl">&lt;img src="..."&gt;</code>.</p>
     <pre class="code"><span class="tg">&lt;a</span> href=<span class="st">"https://o-clock.io"</span><span class="tg">&gt;</span>Voir O'Clock<span class="tg">&lt;/a&gt;</span>
 <span class="tg">&lt;img</span> src=<span class="st">"https://picsum.photos/200"</span><span class="tg">&gt;</span></pre>
-    <div class="callout c-key"><span class="lab">🔑 Point clé</span> <code class="inl">href</code> = la destination du lien. <code class="inl">src</code> = l'adresse de l'image.</div>`,
+    <div class="callout c-key"><span class="lab">🔑 Point clé</span> <code class="inl">href</code> = la destination du lien. <code class="inl">src</code> = l'adresse de l'image.</div>
+    <div class="callout c-warn"><span class="lab">⚠️ Erreur à éviter</span>
+    Un attribut sans guillemets (<code class="inl">href=https://o-clock.io</code>) peut casser la balise dès qu'il y a un caractère spécial dans la valeur. Toujours entourer la valeur de guillemets : <code class="inl">href="https://o-clock.io"</code>.</div>`,
     defi:{type:"code", q:"Ajoute un lien (&lt;a href&gt;) ET une image (&lt;img src&gt;).",
       start:"<h2>Mon mini-site</h2>\n<!-- ajoute ton lien et ton image ici -->\n",
       check:(v)=> /<a\s[^>]*href=/i.test(v) && /<img\s[^>]*src=/i.test(v),
       expl:"Un lien &lt;a href&gt; et une image &lt;img src&gt; : deux balises que tu retrouveras partout."} },
 
+  { titre:"SEO de base : titre & attribut alt",
+    lecon:`<span class="kicker" style="color:#f97316">HTML — SEO concret</span>
+    <h2>Aider Google (et les malvoyants) à comprendre ta page</h2>
+    <p>Deux petits réglages qui comptent énormément, gratuits et faciles à oublier :</p>
+    <ul>
+      <li>📑 Le <code class="inl">&lt;title&gt;</code> (dans le <code class="inl">&lt;head&gt;</code>) — le nom de la page, affiché dans l'onglet du navigateur ET dans les résultats Google.</li>
+      <li>🖼️ L'attribut <code class="inl">alt</code> sur une <code class="inl">&lt;img&gt;</code> — un texte qui décrit l'image.</li>
+    </ul>
+    <pre class="code"><span class="tg">&lt;head&gt;</span>
+  <span class="tg">&lt;title&gt;</span>Mon portfolio — Wassim<span class="tg">&lt;/title&gt;</span>
+<span class="tg">&lt;/head&gt;</span>
+
+<span class="tg">&lt;img</span> src=<span class="st">"chat.jpg"</span> alt=<span class="st">"Chat roux assis sur un canapé"</span><span class="tg">&gt;</span></pre>
+    <div class="callout c-ana"><span class="lab">🧠 Comme sur Shopify</span>
+    Le champ "texte alternatif" que tu remplissais sur une fiche produit ? C'est exactement l'attribut <code class="inl">alt</code>.</div>
+    <div class="callout c-key"><span class="lab">🔑 Point clé</span>
+    <code class="inl">alt</code> n'est pas décoratif : c'est ce qui s'affiche si l'image ne charge pas, ce que lit un lecteur d'écran pour une personne malvoyante, et ce que Google utilise pour indexer l'image.</div>
+    <div class="callout c-warn"><span class="lab">⚠️ Erreur à éviter</span>
+    Un <code class="inl">alt</code> vide n'est correct QUE pour une image purement décorative. Ne mets jamais un <code class="inl">alt</code> qui ne décrit rien de réel (comme "image1" ou "photo") — décris ce qu'on voit vraiment.</div>`,
+    defi:{type:"quiz", q:"À quoi sert l'attribut alt d'une image ?",
+      opts:["À changer sa taille","À la décrire pour Google et les lecteurs d'écran","À la centrer sur la page"], correct:1,
+      expl:"alt = texte alternatif : lu par les lecteurs d'écran, affiché si l'image ne charge pas, et utilisé par Google pour comprendre le contenu de l'image."} },
+
+  { titre:"Plusieurs liens + image avec alt",
+    lecon:`<span class="kicker" style="color:#f97316">HTML — pratique avancée</span>
+    <h2>Un mini-site, pas juste un lien perdu</h2>
+    <p>Une vraie page a souvent plusieurs liens (menu, sources, contact) et n'oublie jamais l'attribut <code class="inl">alt</code> sur ses images — tu sais maintenant pourquoi.</p>
+    <div class="callout c-warn"><span class="lab">⚠️ Erreur à éviter</span>
+    Un <code class="inl">alt</code> oublié ne fait planter aucune page, mais c'est une mauvaise pratique systématique : Google et les lecteurs d'écran ignorent totalement l'image. Prends l'habitude de toujours le remplir.</div>`,
+    defi:{type:"code", q:"Ta page doit contenir AU MOINS 2 liens (&lt;a href&gt;) ET une image avec un attribut alt REMPLI (non vide).",
+      start:"<h2>Mes liens utiles</h2>\n<a href=\"https://o-clock.io\">O'Clock</a>\n<!-- ajoute un 2e lien et une image avec alt ici -->\n",
+      check:(v)=> (v.match(/<a\s[^>]*href=/gi)||[]).length>=2 && /<img\s[^>]*alt=("|')[^"']+\1/i.test(v),
+      expl:"Deux liens et une image avec un vrai alt (pas vide) : exactement ce qu'on retrouve sur une page pro. Un alt vide est réservé aux images purement décoratives."} },
+
+  { titre:"Balises sémantiques : header, nav, main, footer",
+    lecon:`<span class="kicker" style="color:#f97316">HTML — intégration moderne</span>
+    <h2>Structurer une vraie page (pas que des &lt;div&gt;)</h2>
+    <p>HTML propose des balises qui décrivent le RÔLE de chaque zone, plutôt que des <code class="inl">&lt;div&gt;</code> génériques partout :</p>
+    <ul>
+      <li>🎩 <code class="inl">&lt;header&gt;</code> — l'en-tête (souvent logo + titre)</li>
+      <li>🧭 <code class="inl">&lt;nav&gt;</code> — le menu de navigation (les liens principaux)</li>
+      <li>📦 <code class="inl">&lt;main&gt;</code> — le contenu principal de la page (un seul par page)</li>
+      <li>👣 <code class="inl">&lt;footer&gt;</code> — le bas de page (copyright, infos secondaires)</li>
+    </ul>
+    <pre class="code"><span class="tg">&lt;header&gt;</span>
+  <span class="tg">&lt;h1&gt;</span>Mon Site<span class="tg">&lt;/h1&gt;</span>
+  <span class="tg">&lt;nav&gt;</span>
+    <span class="tg">&lt;a</span> href=<span class="st">"#accueil"</span><span class="tg">&gt;</span>Accueil<span class="tg">&lt;/a&gt;</span>
+  <span class="tg">&lt;/nav&gt;</span>
+<span class="tg">&lt;/header&gt;</span>
+
+<span class="tg">&lt;main&gt;</span>
+  <span class="tg">&lt;p&gt;</span>Le contenu principal.<span class="tg">&lt;/p&gt;</span>
+<span class="tg">&lt;/main&gt;</span>
+
+<span class="tg">&lt;footer&gt;</span>
+  <span class="tg">&lt;p&gt;</span>© 2026 Wassim<span class="tg">&lt;/p&gt;</span>
+<span class="tg">&lt;/footer&gt;</span></pre>
+    <div class="callout c-ana"><span class="lab">🧠 Comme WordPress</span>
+    Ça te rappellera header.php et footer.php dans un thème WordPress — même logique, mais en HTML pur et directement dans la page.</div>
+    <div class="callout c-key"><span class="lab">🔑 Point clé</span>
+    Ces balises ne changent rien visuellement par défaut, mais donnent du SENS à la structure : pour Google, les lecteurs d'écran, et les autres développeurs qui liront ton code.</div>
+    <div class="callout c-warn"><span class="lab">⚠️ Erreur à éviter</span>
+    <code class="inl">&lt;main&gt;</code> ne doit apparaître qu'UNE seule fois par page — ce n'est pas une zone générique comme &lt;div&gt;. <code class="inl">&lt;nav&gt;</code> sert pour un vrai menu de navigation, pas pour n'importe quelle liste de liens.</div>`,
+    defi:{type:"code", q:"Structure ta page avec &lt;header&gt;, &lt;nav&gt; (contenant au moins 1 lien), &lt;main&gt;, et &lt;footer&gt;.",
+      start:"<header>\n  <h1>Mon Site</h1>\n  <!-- ajoute ta nav ici -->\n</header>\n<!-- ajoute ton main ici -->\n<!-- ajoute ton footer ici -->\n",
+      check:(v)=> /<header>[\s\S]*<\/header>/i.test(v) && /<nav>[\s\S]*?<a\s[^>]*href=[\s\S]*?<\/nav>/i.test(v) && /<main>[\s\S]*<\/main>/i.test(v) && /<footer>[\s\S]*<\/footer>/i.test(v),
+      expl:"header/nav/main/footer : la vraie structure d'une page moderne. C'est ce qu'on attend dès le Module 01 à O'Clock (intégration)."} },
+
   { titre:"Projet : ta page perso",
     lecon:`<span class="kicker" style="color:#f97316">HTML — projet</span>
     <h2>Assemble tout 🎯</h2>
-    <p>Tu as vu titres, paragraphes, listes, liens. Assemble-les en une vraie petite page de présentation. C'est ton premier « projet ».</p>
-    <div class="callout c-ana"><span class="lab">🧠 Pour ton portfolio</span> Ce genre de page, c'est exactement ce que tu montreras à l'entrée d'O'Clock.</div>`,
+    <p>Tu as vu titres, paragraphes, listes, liens, images, sémantique. Assemble-les en une vraie petite page de présentation. C'est ton premier « projet ».</p>
+    <div class="callout c-ana"><span class="lab">🧠 Pour ton portfolio</span> Ce genre de page, c'est exactement ce que tu montreras à l'entrée d'O'Clock.</div>
+    <div class="callout c-warn"><span class="lab">⚠️ Erreur à éviter</span>
+    Vérifie CHAQUE balise ouverte : a-t-elle bien sa fermante (sauf &lt;img&gt;, qui se suffit à elle-même) ? Une seule balise oubliée peut décaler l'affichage de toute la fin de la page.</div>`,
     defi:{type:"code", q:"Fais une page avec : un titre &lt;h1&gt;, un paragraphe &lt;p&gt;, une liste &lt;ul&gt; de 3 &lt;li&gt;, et un lien &lt;a&gt;.",
       start:"<h1>Moi, Wassim</h1>\n<p>Futur développeur.</p>\n<ul>\n  <li>Gestion d'entreprise</li>\n</ul>\n",
       check:(v)=> /<h1>[\s\S]*?<\/h1>/i.test(v) && /<p>[\s\S]*?<\/p>/i.test(v) && (v.match(/<li>/gi)||[]).length>=3 && /<a\s[^>]*href=/i.test(v),
