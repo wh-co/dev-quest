@@ -634,6 +634,25 @@ saluer(prenom);  <span class="cm">// → "Salut Wassim !"</span></pre>
       opts:["À arrêter le site","À renvoyer un résultat","À créer une variable"], correct:1,
       expl:"return renvoie le résultat de la fonction à celui qui l'a appelée. Sans return, la machine tourne mais ne rend rien."} },
 
+  { titre:"Les tableaux (array)",
+    lecon:`<span class="kicker" style="color:#ca8a04">JavaScript</span>
+    <h2>Ranger plusieurs valeurs : le tableau</h2>
+    <p>Une variable garde UNE valeur. Un <b>tableau</b> (<i>array</i>) en garde PLUSIEURS, dans l'ordre, accessibles par leur position : l'<b>index</b>.</p>
+    <pre class="code"><span class="kw">let</span> fruits = [<span class="st">"pomme"</span>, <span class="st">"banane"</span>, <span class="st">"kiwi"</span>];
+
+fruits[0];       <span class="cm">// → "pomme" (le premier, index 0 !)</span>
+fruits[1];       <span class="cm">// → "banane"</span>
+fruits.length;   <span class="cm">// → 3 (le nombre d'éléments)</span></pre>
+    <div class="callout c-ana"><span class="lab">🧠 Analogie</span>
+    Comme des casiers numérotés dans un rayon : le casier n°0 est le PREMIER, pas le n°1.</div>
+    <div class="callout c-key"><span class="lab">🔑 Point clé</span>
+    L'index commence à <b>0</b>, pas 1. <code class="inl">fruits[0]</code> = le premier, <code class="inl">fruits[2]</code> = le troisième. <code class="inl">.length</code> donne le nombre total d'éléments.</div>
+    <div class="callout c-warn"><span class="lab">⚠️ Erreur à éviter</span>
+    Piège classique : penser que <code class="inl">fruits[1]</code> est le premier élément. En JavaScript, le comptage commence à 0 : <code class="inl">fruits[0]</code> est le premier, <code class="inl">fruits[fruits.length-1]</code> est le dernier.</div>`,
+    defi:{type:"quiz", q:"Tu as let fruits = ['pomme','banane','kiwi']; que vaut fruits[1] ?",
+      opts:["'pomme' (le premier)","'banane' (le deuxième)","'kiwi' (le troisième)"], correct:1,
+      expl:"L'index commence à 0 : fruits[0]='pomme', fruits[1]='banane', fruits[2]='kiwi'. fruits[1] est donc le DEUXIÈME élément, pas le premier."} },
+
   { titre:"Le DOM & les boutons",
     lecon:`<span class="kicker" style="color:#ca8a04">JavaScript</span>
     <h2>Réagir à un clic</h2>
@@ -658,11 +677,34 @@ bouton.addEventListener(<span class="st">"click"</span>, () =&gt; {
 } <span class="kw">else</span> {
   document.getElementById(<span class="st">"r"</span>).textContent = <span class="st">"Mineur"</span>;
 }</pre>
-    <div class="callout c-key"><span class="lab">🔑 Point clé</span> <code class="inl">&gt;=</code> veut dire « supérieur ou égal ». La condition entre parenthèses renvoie vrai ou faux.</div>`,
+    <div class="callout c-key"><span class="lab">🔑 Point clé</span> <code class="inl">&gt;=</code> veut dire « supérieur ou égal ». La condition entre parenthèses renvoie vrai ou faux.</div>
+    <div class="callout c-warn"><span class="lab">⚠️ Erreur à éviter</span>
+    Chaque instruction se termine par un point-virgule <code class="inl">;</code> — l'oublier ne provoque pas toujours une erreur visible, mais peut casser la ligne suivante selon le contexte. Prends l'habitude de toujours le mettre.</div>`,
     defi:{type:"code", q:"Complète : écris 'Majeur' ou 'Mineur' dans le paragraphe selon <b>age</b>, avec if / else.",
       start:'<p id="r">?</p>\n<script>\n  let age = 20;\n  // ton if / else ici\n  \n<\/script>',
       check:(v)=> /if\s*\(/.test(v) && /else/.test(v) && /(textContent|innerHTML)/.test(v),
       expl:"if (condition) { … } else { … } → ton programme prend une décision. Change age à 15 et re-teste pour voir !"} },
+
+  { titre:"if / else avancé : plusieurs choix",
+    lecon:`<span class="kicker" style="color:#ca8a04">JavaScript — pratique avancée</span>
+    <h2>Quand il y a plus de 2 choix : else if</h2>
+    <p><code class="inl">if</code> / <code class="inl">else</code> ne donne que 2 branches. Pour 3 choix ou plus, on chaîne avec <code class="inl">else if</code> :</p>
+    <pre class="code"><span class="kw">let</span> note = 12;
+<span class="kw">if</span> (note &gt;= 16) {
+  resultat = <span class="st">"Très bien"</span>;
+} <span class="kw">else if</span> (note &gt;= 10) {
+  resultat = <span class="st">"Passable"</span>;
+} <span class="kw">else</span> {
+  resultat = <span class="st">"Insuffisant"</span>;
+}</pre>
+    <div class="callout c-key"><span class="lab">🔑 Point clé</span>
+    <code class="inl">else if</code> s'insère ENTRE if et else. JS teste les conditions dans l'ordre et s'arrête à la première qui est vraie.</div>
+    <div class="callout c-warn"><span class="lab">⚠️ Erreur à éviter</span>
+    Erreur fréquente : confondre <code class="inl">=</code> (affectation, on donne une valeur) et <code class="inl">===</code> (comparaison, on teste l'égalité). <code class="inl">if (note = 10)</code> affecte 10 à note au lieu de comparer — utilise toujours <code class="inl">===</code> dans une condition.</div>`,
+    defi:{type:"code", q:"Avec if / else if / else, affiche 'Majeur' (18+), 'Ado' (13 à 17) ou 'Enfant' (moins de 13) selon age.",
+      start:'<p id="r">?</p>\n<script>\n  let age = 15;\n  // if / else if / else ici\n  \n<\/script>',
+      check:(v)=> /if\s*\(/.test(v) && /else\s+if\s*\(/.test(v) && /else\s*\{/.test(v) && /(textContent|innerHTML)/.test(v),
+      expl:"else if teste plusieurs cas dans l'ordre, avant le else final qui couvre tout le reste. Change age et re-teste pour voir chaque branche s'activer."} },
 
   { titre:"Répéter avec for",
     lecon:`<span class="kicker" style="color:#ca8a04">JavaScript — pratique</span>
@@ -671,16 +713,37 @@ bouton.addEventListener(<span class="st">"click"</span>, () =&gt; {
     <pre class="code"><span class="kw">for</span> (<span class="kw">let</span> i = 1; i &lt;= 5; i++) {
   liste.innerHTML += <span class="st">"&lt;li&gt;Ligne "</span> + i + <span class="st">"&lt;/li&gt;"</span>;
 }</pre>
-    <div class="callout c-key"><span class="lab">🔑 Point clé</span> <code class="inl">i++</code> = ajoute 1 à i à chaque tour. La boucle s'arrête quand i dépasse 5.</div>`,
+    <div class="callout c-key"><span class="lab">🔑 Point clé</span> <code class="inl">i++</code> = ajoute 1 à i à chaque tour. La boucle s'arrête quand i dépasse 5.</div>
+    <div class="callout c-warn"><span class="lab">⚠️ Erreur à éviter</span>
+    Oublier l'incrément (<code class="inl">i++</code>) dans les parenthèses du for crée une boucle INFINIE : la condition ne devient jamais fausse, et la page plante ou se fige.</div>`,
     defi:{type:"code", q:"Avec une boucle <b>for</b>, ajoute 5 &lt;li&gt; dans la liste.",
       start:'<ul id="liste"></ul>\n<script>\n  let liste = document.getElementById("liste");\n  // ta boucle for ici\n  \n<\/script>',
       check:(v)=> /for\s*\(/.test(v),
       expl:"Une boucle for répète une action X fois. Indispensable : imagine écrire 100 lignes à la main sinon !"} },
 
+  { titre:"for avancé : boucler sur un tableau",
+    lecon:`<span class="kicker" style="color:#ca8a04">JavaScript — pratique avancée</span>
+    <h2>Combiner tableau et boucle</h2>
+    <p>La vraie puissance du <code class="inl">for</code> : parcourir un tableau grâce à son <code class="inl">.length</code>, sans connaître à l'avance son nombre d'éléments.</p>
+    <pre class="code"><span class="kw">let</span> fruits = [<span class="st">"pomme"</span>, <span class="st">"banane"</span>, <span class="st">"kiwi"</span>];
+<span class="kw">for</span> (<span class="kw">let</span> i = 0; i &lt; fruits.length; i++) {
+  liste.innerHTML += <span class="st">"&lt;li&gt;"</span> + fruits[i] + <span class="st">"&lt;/li&gt;"</span>;
+}</pre>
+    <div class="callout c-key"><span class="lab">🔑 Point clé</span>
+    <code class="inl">i &lt; fruits.length</code> (pas <code class="inl">&lt;=</code>) : comme l'index commence à 0, le dernier index valide est <code class="inl">length-1</code>. Cette boucle couvre exactement tous les éléments, sans dépasser.</div>
+    <div class="callout c-warn"><span class="lab">⚠️ Erreur à éviter</span>
+    Oublier le <code class="inl">+=</code> dans la boucle (mettre <code class="inl">=</code> à la place) EFFACE le contenu précédent à chaque tour au lieu de l'ajouter. Résultat : tu ne vois que le DERNIER élément au lieu de toute la liste.</div>`,
+    defi:{type:"code", q:"Avec une boucle for et fruits.length, affiche chaque élément du tableau fruits dans la liste (un &lt;li&gt; par fruit).",
+      start:'<ul id="liste"></ul>\n<script>\n  let fruits = ["pomme", "banane", "kiwi"];\n  let liste = document.getElementById("liste");\n  // ta boucle for ici, avec fruits.length\n  \n<\/script>',
+      check:(v)=> /for\s*\(/.test(v) && /\.length/.test(v) && /fruits\[/.test(v),
+      expl:"i < fruits.length parcourt exactement tous les éléments du tableau, quel que soit leur nombre. C'est la boucle la plus utilisée en vrai : parcourir une liste de données."} },
+
   { titre:"Mini-projet : le clic magique",
     lecon:`<span class="kicker" style="color:#ca8a04">JavaScript — projet</span>
     <h2>Ta première vraie interaction ⚡</h2>
-    <p>On combine tout : écouter un clic (<code class="inl">addEventListener</code>) et modifier la page (<code class="inl">textContent</code>). C'est le cœur du métier front.</p>`,
+    <p>On combine tout : écouter un clic (<code class="inl">addEventListener</code>) et modifier la page (<code class="inl">textContent</code>). C'est le cœur du métier front.</p>
+    <div class="callout c-warn"><span class="lab">⚠️ Erreur à éviter</span>
+    <code class="inl">addEventListener</code> prend un "L" majuscule au milieu (Event<b>L</b>istener) et se termine par "er", pas "ers". Une faute de frappe ici ne provoque aucune erreur visible — le clic ne fait simplement rien.</div>`,
     defi:{type:"code", q:"Quand on clique sur le bouton, change le texte du paragraphe (addEventListener + textContent).",
       start:'<button id="b">Clique-moi</button>\n<p id="msg">Rien pour l\'instant…</p>\n<script>\n  let b = document.getElementById("b");\n  // au clic, change #msg\n  \n<\/script>',
       check:(v)=> /addEventListener/.test(v) && /(textContent|innerHTML)/.test(v),
