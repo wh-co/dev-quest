@@ -212,7 +212,9 @@ const GAME = { worlds: [
       <li>⚡ <b>JavaScript</b> — le mouvement (les boutons qui réagissent)</li>
     </ul>
     <div class="callout c-key"><span class="lab">🔑 À retenir</span>
-    Front = ce que l'utilisateur voit. Back = le moteur caché (souvent en <b>Python</b>, comme ton app Lightman).</div>`,
+    Front = ce que l'utilisateur voit. Back = le moteur caché (souvent en <b>Python</b>, comme ton app Lightman).</div>
+    <div class="callout c-warn"><span class="lab">⚠️ Erreur à éviter</span>
+    Ne confonds pas <b>navigateur</b> (Chrome, Safari — le logiciel qui affiche) et <b>serveur</b> (la machine qui héberge le site, ailleurs sur internet). Le navigateur ne contient rien : il va chercher le site à chaque fois.</div>`,
     defi:{type:"quiz", q:"Dans l'analogie du restaurant, le back-end c'est…",
       opts:["La salle et la déco","La cuisine cachée","Le menu affiché"], correct:1,
       expl:"Le back-end = la cuisine : invisible, mais c'est là qu'on prépare et qu'on stocke. Le front, c'est la salle."} },
@@ -227,10 +229,63 @@ Client  ──►  "Donne-moi la page d'accueil"
 Serveur ──►  &lt;html&gt;...&lt;/html&gt;</pre>
     <div class="callout c-ana"><span class="lab">🧠 Analogie</span>
     Tu (client) commandes une pizza par téléphone. La pizzeria (serveur) prépare et livre. Tu n'as pas besoin de savoir COMMENT ils la font.</div>
-    <p>Une <b>API</b>, c'est le menu de commande du serveur : une liste d'adresses (des <i>routes</i>) que le client peut appeler pour obtenir des données.</p>`,
+    <p>Une <b>API</b>, c'est le menu de commande du serveur : une liste d'adresses (des <i>routes</i>) que le client peut appeler pour obtenir des données.</p>
+    <div class="callout c-warn"><span class="lab">⚠️ Erreur à éviter</span>
+    « Client » ne veut pas dire « une personne » : c'est le <b>programme</b> qui demande (ton navigateur, ou une appli mobile). Une appli peut très bien être un client qui appelle une API toute seule, sans humain qui clique.</div>`,
     defi:{type:"quiz", q:"Qui DEMANDE dans le duo client/serveur ?",
       opts:["Le serveur","Le client","Les deux en même temps"], correct:1,
-      expl:"Le client demande, le serveur répond. Ton tél = client ; la machine qui héberge le site = serveur."} }
+      expl:"Le client demande, le serveur répond. Ton tél = client ; la machine qui héberge le site = serveur."} },
+
+  { titre:"Mise en situation : suis la requête",
+    lecon:`<span class="kicker" style="color:#0ea5e9">Mise en pratique</span>
+    <h2>Suis le trajet, en vrai 🎯</h2>
+    <p>Tu tapes l'adresse d'un site dans ton navigateur, sur ton téléphone. Voici ce qui se passe, dans l'ordre :</p>
+    <pre class="code"><span class="cm">1.</span> Ton téléphone (le <b>client</b>) envoie une demande
+<span class="cm">2.</span> Elle voyage jusqu'au <b>serveur</b> qui héberge le site
+<span class="cm">3.</span> Le serveur répond en renvoyant les fichiers (HTML, CSS, JS)
+<span class="cm">4.</span> Ton navigateur (Chrome, Safari…) assemble tout et affiche la page</pre>
+    <div class="callout c-warn"><span class="lab">⚠️ Erreur à éviter</span>
+    Un site n'est <b>jamais</b> stocké « dans » ton téléphone par magie avant que tu l'ouvres. À chaque visite, ton téléphone repart le demander au serveur — sans connexion internet, la demande ne peut pas partir.</div>`,
+    defi:{type:"quiz", q:"Tu ouvres un site que tu n'as jamais visité, en mode avion (pas de connexion). Que se passe-t-il ?",
+      opts:["La page s'affiche quand même","Rien ne s'affiche : le client ne peut pas joindre le serveur","Le serveur vient chercher le téléphone"], correct:1,
+      expl:"Sans connexion, le client (ton téléphone) ne peut pas envoyer sa demande au serveur. Rien à afficher : la preuve que la page n'était pas déjà là, il fallait aller la chercher."} },
+
+  { titre:"C'est quoi une URL",
+    lecon:`<span class="kicker" style="color:#0ea5e9">Adresses du web</span>
+    <h2>L'adresse d'une page : l'URL</h2>
+    <p>Une <b>URL</b> (« adresse » d'une ressource sur le web) est ce que tu tapes ou cliques pour aller quelque part : une page, une image, un fichier.</p>
+    <pre class="code">https://o-clock.io/formation
+<span class="cm">↑ protocole   ↑ domaine     ↑ chemin</span></pre>
+    <ul>
+      <li>🔒 <b>Protocole</b> (<code class="inl">https://</code>) — la règle de communication utilisée entre client et serveur</li>
+      <li>🏠 <b>Domaine</b> (<code class="inl">o-clock.io</code>) — l'adresse du serveur, unique sur tout internet</li>
+      <li>📄 <b>Chemin</b> (<code class="inl">/formation</code>) — la page précise demandée sur ce serveur</li>
+    </ul>
+    <div class="callout c-ana"><span class="lab">🧠 Analogie</span>
+    Comme une adresse postale : le domaine = la ville, le chemin = la rue et le numéro. Change le chemin, tu restes dans la même ville (le même site) mais tu frappes à une autre porte.</div>
+    <div class="callout c-warn"><span class="lab">⚠️ Erreur à éviter</span>
+    Le chemin (après le premier <code class="inl">/</code>) ne change PAS de site : il pointe juste vers une autre page du même domaine. <code class="inl">o-clock.io/formation</code> et <code class="inl">o-clock.io/contact</code> sont le même site.</div>`,
+    defi:{type:"quiz", q:"Dans https://o-clock.io/formation, quelle partie est le domaine ?",
+      opts:["https","o-clock.io","/formation"], correct:1,
+      expl:"o-clock.io = le domaine, l'adresse unique du serveur. https:// = le protocole. /formation = le chemin vers une page précise de ce site."} },
+
+  { titre:"La requête HTTP (GET)",
+    lecon:`<span class="kicker" style="color:#0ea5e9">Parler au serveur</span>
+    <h2>Comment le client demande : HTTP</h2>
+    <p><b>HTTP</b> est le langage commun que client et serveur utilisent pour se parler. Chaque demande du client s'appelle une <b>requête</b>.</p>
+    <p>La requête la plus courante s'appelle <b>GET</b> : elle veut dire « donne-moi cette ressource », sans rien modifier sur le serveur.</p>
+    <pre class="code"><span class="cm">// Ton navigateur envoie :</span>
+GET /formation HTTP/1.1
+<span class="cm">// Le serveur répond :</span>
+200 OK
+&lt;html&gt;...&lt;/html&gt;</pre>
+    <div class="callout c-key"><span class="lab">🔑 À retenir</span>
+    Chaque fois que tu cliques sur un lien ou tapes une URL, ton navigateur envoie une requête <b>GET</b> pour récupérer la page. (D'autres types de requêtes existent, comme <b>POST</b> pour envoyer des données — tu les verras plus tard.)</div>
+    <div class="callout c-warn"><span class="lab">⚠️ Erreur à éviter</span>
+    Une requête GET ne doit jamais modifier quoi que ce soit côté serveur (pas de suppression, pas d'écriture) — elle sert uniquement à lire/récupérer. C'est une convention que respecte tout développeur.</div>`,
+    defi:{type:"quiz", q:"Tu cliques sur un lien pour lire un article. Quel type de requête ton navigateur envoie-t-il ?",
+      opts:["GET — il demande la page","POST — il envoie des données","Aucune, le lien s'affiche seul"], correct:0,
+      expl:"Lire une page = une requête GET : le client demande, sans rien modifier côté serveur. C'est la requête la plus fréquente sur le web."} }
  ]},
 
 /* ============================ MONDE : HTML ============================ */
