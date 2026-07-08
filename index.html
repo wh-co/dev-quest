@@ -478,6 +478,25 @@ GET /formation HTTP/1.1
       opts:["font-size","color","text-align"], correct:1,
       expl:"color = couleur du texte. font-size = la taille, text-align = l'alignement."} },
 
+  { titre:"Les sélecteurs : id, class, élément",
+    lecon:`<span class="kicker" style="color:#3b82f6">CSS</span>
+    <h2>Cibler le bon élément</h2>
+    <p>Avant de styler, il faut <b>sélectionner</b>. Trois façons de viser un élément :</p>
+    <pre class="code">h1 { color: <span class="st">blue</span>; }        <span class="cm">/* TOUS les &lt;h1&gt; */</span>
+.alerte { color: <span class="st">red</span>; }    <span class="cm">/* TOUT élément avec class="alerte" */</span>
+#logo { width: <span class="st">80px</span>; }    <span class="cm">/* le SEUL élément avec id="logo" */</span></pre>
+    <div class="callout c-key"><span class="lab">🔑 Point clé</span>
+    <b>Élément</b> (h1) = tous les éléments de ce type. <b>Classe</b> (<code class="inl">.alerte</code>) = réutilisable sur plusieurs éléments. <b>Id</b> (<code class="inl">#logo</code>) = un seul élément, unique sur toute la page.</div>
+    <div class="callout c-ana"><span class="lab">🧠 Analogie</span>
+    Comme des étiquettes en magasin : une <b>classe</b> = un rayon entier de produits similaires. Un <b>id</b> = le numéro de série d'un seul article unique.</div>
+    <div class="callout c-key"><span class="lab">🔑 En pratique</span>
+    On utilise surtout des <b>classes</b> : réutilisables, combinables, flexibles. Les id sont réservés à un usage unique par page (souvent pour du JavaScript, plus que pour du style).</div>
+    <div class="callout c-warn"><span class="lab">⚠️ Erreur à éviter</span>
+    Oublier le point devant une classe (<code class="inl">alerte { color:red; }</code> au lieu de <code class="inl">.alerte { color:red; }</code>) — sans le point, ce n'est plus une classe mais un nom de balise qui n'existe pas : le style ne s'applique à rien.</div>`,
+    defi:{type:"quiz", q:"Tu veux styler UN SEUL élément précis et unique sur la page (le logo). Tu utilises…",
+      opts:["Un sélecteur de classe (.logo)","Un sélecteur d'id (#logo)","Un sélecteur d'élément (logo)"], correct:1,
+      expl:"Un id (#logo) cible un seul élément unique. Une classe (.logo) peut être réutilisée sur plusieurs éléments — c'est d'ailleurs ce qu'on utilise le plus souvent."} },
+
   { titre:"Les classes",
     lecon:`<span class="kicker" style="color:#3b82f6">CSS</span>
     <h2>Réutiliser un style : les classes</h2>
@@ -507,26 +526,89 @@ GET /formation HTTP/1.1
     font-size: <span class="st">40px</span>;
   }
 <span class="tg">&lt;/style&gt;</span></pre>
-    <div class="callout c-key"><span class="lab">🔑 Point clé</span> Chaque propriété finit par un <b>;</b>. Ici on change la couleur ET la taille du titre.</div>`,
+    <div class="callout c-key"><span class="lab">🔑 Point clé</span> Chaque propriété finit par un <b>;</b>. Ici on change la couleur ET la taille du titre.</div>
+    <div class="callout c-warn"><span class="lab">⚠️ Erreur à éviter</span>
+    Un point-virgule <code class="inl">;</code> oublié après une propriété peut empêcher TOUTES les propriétés suivantes du même bloc de s'appliquer. Vérifie chaque ligne.</div>`,
     defi:{type:"code", q:"Dans le &lt;style&gt;, donne à h1 une <b>color</b> ET une <b>font-size</b>.",
       start:"<h1>Regarde-moi changer !</h1>\n<style>\n  h1 {\n    /* écris ici */\n  }\n</style>",
       check:(v)=> /h1\s*\{[^}]*color\s*:/i.test(v) && /h1\s*\{[^}]*font-size\s*:/i.test(v),
       expl:"Tu viens d'habiller du HTML avec du CSS : color = couleur du texte, font-size = sa taille."} },
 
+  { titre:"Le box model : margin, border, padding",
+    lecon:`<span class="kicker" style="color:#3b82f6">CSS — pratique</span>
+    <h2>Chaque élément est une boîte</h2>
+    <p>Tout élément HTML est une boîte rectangulaire faite de couches, du centre vers l'extérieur : le contenu, puis le <b>padding</b>, puis le <b>border</b>, puis le <b>margin</b>.</p>
+    <pre class="code">.boite {
+  margin: <span class="st">20px</span>;                  <span class="cm">/* espace EXTÉRIEUR, entre la boîte et ses voisines */</span>
+  border: <span class="st">2px solid #333</span>;       <span class="cm">/* le cadre visible */</span>
+  padding: <span class="st">20px</span>;                <span class="cm">/* espace INTÉRIEUR, entre le cadre et le contenu */</span>
+}</pre>
+    <div class="callout c-ana"><span class="lab">🧠 Analogie</span>
+    Comme une pièce : le <b>padding</b> = l'espace entre les murs (border) et les meubles (contenu). Le <b>margin</b> = la distance avec la pièce d'à côté.</div>
+    <div class="callout c-key"><span class="lab">🔑 Astuce mémo</span>
+    Air ENTRE le texte et le cadre → <b>padding</b>. Air ENTRE deux boîtes différentes → <b>margin</b>.</div>
+    <div class="callout c-warn"><span class="lab">⚠️ Erreur à éviter</span>
+    Le piège n°1 des débutants : confondre <code class="inl">padding</code> et <code class="inl">margin</code>. Si l'espace ajouté pousse le CONTENU vers le centre de la boîte, c'est du padding. S'il pousse les ÉLÉMENTS VOISINS plus loin, c'est du margin.</div>`,
+    defi:{type:"code", q:"Donne à .boite un <b>margin</b>, un <b>border</b>, ET un <b>padding</b> (les 3 différents).",
+      start:'<div class="boite">\n  <p>Une boîte à espacer.</p>\n</div>\n<style>\n  .boite {\n    background: #eef;\n    /* ajoute margin, border, padding ici */\n  }\n</style>',
+      check:(v)=> /\.boite\s*\{[\s\S]*?margin\s*:/i.test(v) && /\.boite\s*\{[\s\S]*?border\s*:/i.test(v) && /\.boite\s*\{[\s\S]*?padding\s*:/i.test(v),
+      expl:"margin (dehors) + border (le cadre) + padding (dedans) = les 3 couches du box model, la base absolue de la mise en page CSS."} },
+
   { titre:"Centrer avec Flexbox",
     lecon:`<span class="kicker" style="color:#3b82f6">CSS — pratique</span>
     <h2>Le centrage moderne</h2>
     <p>Centrer un contenu, c'est le cauchemar des débutants… sauf avec <b>Flexbox</b>. Sur le conteneur : <code class="inl">display:flex</code> + <code class="inl">justify-content:center</code> (horizontal) + <code class="inl">align-items:center</code> (vertical).</p>
-    <div class="callout c-key"><span class="lab">🔑 Point clé</span> Flexbox est LA compétence CSS qui revient sans arrêt à O'Clock (module 01). La voir maintenant = grosse avance.</div>`,
+    <div class="callout c-key"><span class="lab">🔑 Point clé</span> Flexbox est LA compétence CSS qui revient sans arrêt à O'Clock (module 01). La voir maintenant = grosse avance.</div>
+    <div class="callout c-warn"><span class="lab">⚠️ Erreur à éviter</span>
+    <code class="inl">display:flex</code> se pose sur le <b>conteneur PARENT</b>, jamais sur l'élément à centrer lui-même. Si rien ne bouge, vérifie que c'est bien la boîte englobante qui a la classe stylée.</div>`,
     defi:{type:"code", q:"Rends .box en <b>display:flex</b> et centre son contenu (<b>justify-content</b> + <b>align-items</b> à center).",
       start:'<div class="box">\n  <p>Centre-moi !</p>\n</div>\n<style>\n  .box {\n    height: 160px;\n    background: #eef;\n    /* centre le contenu ici */\n  }\n</style>',
       check:(v)=> /display\s*:\s*flex/i.test(v) && /justify-content\s*:\s*center/i.test(v) && /align-items\s*:\s*center/i.test(v),
       expl:"display:flex + justify-content:center + align-items:center = contenu parfaitement centré. Un réflexe de pro."} },
 
+  { titre:"Flexbox avancé : aligner plusieurs éléments",
+    lecon:`<span class="kicker" style="color:#3b82f6">CSS — pratique avancée</span>
+    <h2>Flexbox pour un vrai menu</h2>
+    <p>Flexbox ne sert pas qu'à centrer : il excelle pour répartir <b>plusieurs</b> éléments sur une ligne, comme un menu de navigation.</p>
+    <pre class="code">.menu {
+  display: <span class="st">flex</span>;
+  justify-content: <span class="st">space-between</span>;  <span class="cm">/* écarte les items sur toute la largeur */</span>
+  gap: <span class="st">12px</span>;                       <span class="cm">/* espace constant en plus, entre eux */</span>
+}</pre>
+    <div class="callout c-key"><span class="lab">🔑 Point clé</span>
+    <code class="inl">justify-content:space-between</code> écarte les éléments sur toute la largeur (logo à gauche, liens à droite). <code class="inl">gap</code> ajoute un espace constant ENTRE les éléments, comme un margin automatique.</div>
+    <div class="callout c-warn"><span class="lab">⚠️ Erreur à éviter</span>
+    Flexbox s'applique au CONTENEUR (celui qui a <code class="inl">display:flex</code>), pas à ses enfants directement. Vérifie toujours lequel des deux éléments doit porter la propriété.</div>`,
+    defi:{type:"code", q:"Rends .menu en <b>display:flex</b> et écarte ses éléments avec <b>justify-content:space-between</b>.",
+      start:'<div class="menu">\n  <span>Logo</span>\n  <span>Accueil</span>\n  <span>Contact</span>\n</div>\n<style>\n  .menu {\n    background: #eef;\n    padding: 10px;\n    /* rends-le flex et écarte les éléments */\n  }\n</style>',
+      check:(v)=> /display\s*:\s*flex/i.test(v) && /justify-content\s*:\s*space-between/i.test(v),
+      expl:"display:flex + justify-content:space-between = le classique menu avec logo à gauche et liens répartis à droite. Tu viens de faire un vrai menu web."} },
+
+  { titre:"Sass, c'est quoi ?",
+    lecon:`<span class="kicker" style="color:#3b82f6">CSS — culture générale</span>
+    <h2>Sass, tu en entendras parler à O'Clock</h2>
+    <p><b>Sass</b> est une extension du CSS : un langage qui ressemble à du CSS mais ajoute des fonctionnalités pratiques (variables, imbrication de sélecteurs, fichiers réutilisables). Le navigateur, lui, ne comprend QUE du CSS classique — un fichier Sass doit donc être <b>compilé</b> (transformé) en CSS avant d'arriver dans le navigateur.</p>
+    <pre class="code"><span class="cm">// Sass (fichier .scss)</span>
+$couleur-principale: <span class="st">crimson</span>;
+.alerte {
+  color: $couleur-principale;
+  &:hover { color: <span class="st">darkred</span>; }
+}</pre>
+    <pre class="code"><span class="cm">/* CSS généré (ce que le navigateur reçoit) */</span>
+.alerte { color: crimson; }
+.alerte:hover { color: darkred; }</pre>
+    <div class="callout c-key"><span class="lab">🔑 À retenir pour l'instant</span>
+    Sass = du CSS + des super-pouvoirs, à COMPILER en CSS classique avant utilisation. C'est le module 02 d'O'Clock qui t'apprendra à l'utiliser en pratique — inutile de pratiquer avant, juste bon à savoir que ça existe.</div>`,
+    defi:{type:"quiz", q:"Sass, c'est…",
+      opts:["Un nouveau langage qui remplace le CSS","Une extension du CSS, à compiler en CSS classique avant utilisation","Un framework JavaScript"], correct:1,
+      expl:"Sass ajoute des fonctionnalités au CSS (variables, imbrication…) mais doit être transformé (compilé) en CSS normal : le navigateur ne comprend que du CSS classique."} },
+
   { titre:"Projet : une carte stylée",
     lecon:`<span class="kicker" style="color:#3b82f6">CSS — projet</span>
     <h2>Le composant roi : la carte</h2>
-    <p>90% des sites modernes sont faits de « cartes » : un fond, de l'espace intérieur (padding), des coins arrondis, une ombre. Fabrique la tienne.</p>`,
+    <p>90% des sites modernes sont faits de « cartes » : un fond, de l'espace intérieur (padding), des coins arrondis, une ombre. Fabrique la tienne.</p>
+    <div class="callout c-warn"><span class="lab">⚠️ Erreur à éviter</span>
+    Une syntaxe cassée sur UNE SEULE propriété (point-virgule oublié, accolade manquante) peut empêcher tout le bloc <code class="inl">{ }</code> de s'appliquer. Relis ton bloc entier si rien ne s'affiche.</div>`,
     defi:{type:"code", q:"Donne à .carte : un <b>background</b>, du <b>padding</b>, et des coins arrondis (<b>border-radius</b>).",
       start:'<div class="carte">\n  <h3>Ma carte</h3>\n  <p>Stylée avec du CSS.</p>\n</div>\n<style>\n  .carte {\n    /* à toi */\n  }\n</style>',
       check:(v)=> /\.carte\s*\{[\s\S]*?background/i.test(v) && /\.carte\s*\{[\s\S]*?padding/i.test(v) && /\.carte\s*\{[\s\S]*?border-radius/i.test(v),
