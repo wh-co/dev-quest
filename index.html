@@ -767,7 +767,9 @@ bouton.addEventListener(<span class="st">"click"</span>, () =&gt; {
     <div class="callout c-key"><span class="lab">🔑 Point clé</span>
     En Python, le <b>décalage</b> (indentation) remplace les accolades <code class="inl">{ }</code>. Ce qui est décalé sous le <code class="inl">if</code> s'exécute SI la condition est vraie.</div>
     <div class="callout c-ana"><span class="lab">🧠 Tu connais déjà</span>
-    C'est le langage de ton app Lightman : Flask, les appels à Mistral, les garde-fous… tout est en Python.</div>`,
+    C'est le langage de ton app Lightman : Flask, les appels à Mistral, les garde-fous… tout est en Python.</div>
+    <div class="callout c-warn"><span class="lab">⚠️ Erreur à éviter</span>
+    Une indentation incohérente (mélanger espaces et tabulations, ou décaler une ligne différemment de ses voisines) provoque une vraie erreur en Python (<code class="inl">IndentationError</code>) — contrairement à d'autres langages où ce ne serait qu'une question de style.</div>`,
     defi:{type:"quiz", q:"En Python, qu'est-ce qui dit « cette ligne est DANS le if » ?",
       opts:["Un point-virgule ;","Des accolades { }","Le décalage (indentation)"], correct:2,
       expl:"Python utilise l'indentation (les espaces devant la ligne) pour structurer. Pas de { } ni de ;."} },
@@ -784,7 +786,9 @@ bouton.addEventListener(<span class="st">"click"</span>, () =&gt; {
 }</pre>
     <p>En Python on lit une valeur avec sa clé : <code class="inl">data["temperature"]</code> → <b>18</b>.</p>
     <div class="callout c-key"><span class="lab">🔑 Point clé</span>
-    JSON = le langage commun entre programmes. C'est comme ça que Kaiba reçoit les résultats d'Exa dans Lightman.</div>`,
+    JSON = le langage commun entre programmes. C'est comme ça que Kaiba reçoit les résultats d'Exa dans Lightman.</div>
+    <div class="callout c-warn"><span class="lab">⚠️ Erreur à éviter</span>
+    Utiliser une clé qui n'existe pas dans les données (<code class="inl">data["ville_inconnue"]</code>) fait planter le programme (<code class="inl">KeyError</code>). Vérifie que la clé existe, ou utilise <code class="inl">data.get("cle")</code> qui renvoie <code class="inl">None</code> au lieu de planter.</div>`,
     defi:{type:"quiz", q:"Le JSON, ça sert à…",
       opts:["Colorer une page","Échanger des données entre programmes","Créer des animations"], correct:1,
       expl:"JSON = un format universel de données (clés/valeurs). C'est la langue commune des APIs."} },
@@ -794,16 +798,38 @@ bouton.addEventListener(<span class="st">"click"</span>, () =&gt; {
     <h2>Écrire une fonction</h2>
     <p><code class="inl">def</code> définit une fonction, <code class="inl">return</code> renvoie son résultat. (Python ne tourne pas dans le navigateur : écris ta réponse, puis compare à la solution.)</p>
     <pre class="code"><span class="kw">def</span> saluer(nom):
-    <span class="kw">return</span> <span class="st">"Salut "</span> + nom</pre>`,
+    <span class="kw">return</span> <span class="st">"Salut "</span> + nom</pre>
+    <div class="callout c-warn"><span class="lab">⚠️ Erreur à éviter</span>
+    Oublier le <code class="inl">:</code> à la fin de la ligne <code class="inl">def ma_fonction(n):</code>, ou oublier le <code class="inl">return</code> (la fonction s'exécute mais ne renvoie rien, <code class="inl">None</code> par défaut) : les deux fautes les plus fréquentes des débutants.</div>`,
     defi:{type:"ecris", q:"Écris une fonction <code class='inl'>double(n)</code> qui renvoie n multiplié par 2.",
       start:"def double(n):\n    # ton code\n",
       sol:"def double(n):\n    return n * 2\n\nprint(double(5))   # affiche 10",
       expl:"def = on définit ; return = ce qu'on renvoie ; on l'appelle avec double(5)."} },
 
+  { titre:"Fonction avec condition",
+    lecon:`<span class="kicker" style="color:#16a34a">Python — pratique avancée</span>
+    <h2>Une fonction qui décide</h2>
+    <p>Une fonction peut contenir un <code class="inl">if</code> / <code class="inl">else</code>, comme n'importe quel autre bloc de code — c'est ce qui la rend vraiment utile.</p>
+    <pre class="code"><span class="kw">def</span> plus_grand(a, b):
+    <span class="kw">if</span> a &gt; b:
+        <span class="kw">return</span> a
+    <span class="kw">else</span>:
+        <span class="kw">return</span> b</pre>
+    <div class="callout c-key"><span class="lab">🔑 Point clé</span>
+    <code class="inl">return</code> arrête la fonction immédiatement dès qu'il s'exécute. Ici, selon la condition, on renvoie soit <code class="inl">a</code>, soit <code class="inl">b</code>.</div>
+    <div class="callout c-warn"><span class="lab">⚠️ Erreur à éviter</span>
+    Le <code class="inl">if</code> ET le <code class="inl">else</code> ont chacun besoin de leur propre <code class="inl">:</code>, et leur contenu doit être indenté au MÊME niveau, décalé une fois de plus que le <code class="inl">if</code>/<code class="inl">else</code> lui-même.</div>`,
+    defi:{type:"ecris", q:"Écris une fonction <code class='inl'>plus_grand(a, b)</code> qui renvoie le plus grand des deux nombres (avec if / else).",
+      start:"def plus_grand(a, b):\n    # ton code\n",
+      sol:"def plus_grand(a, b):\n    if a > b:\n        return a\n    else:\n        return b\n\nprint(plus_grand(3, 7))   # affiche 7",
+      expl:"if/else DANS une fonction : elle compare puis renvoie le bon résultat selon le cas. C'est exactement ce genre de logique qu'on retrouve dans du vrai code back-end."} },
+
   { titre:"Une boucle Python",
     lecon:`<span class="kicker" style="color:#16a34a">Python — pratique</span>
     <h2>Compter avec range</h2>
-    <p><code class="inl">for i in range(1, 6):</code> parcourt 1, 2, 3, 4, 5 (la borne haute est exclue). Ce qui est indenté dessous se répète.</p>`,
+    <p><code class="inl">for i in range(1, 6):</code> parcourt 1, 2, 3, 4, 5 (la borne haute est exclue). Ce qui est indenté dessous se répète.</p>
+    <div class="callout c-warn"><span class="lab">⚠️ Erreur à éviter</span>
+    Oublier le <code class="inl">:</code> après <code class="inl">for i in range(1, 6)</code>, ou ne pas indenter la ligne <code class="inl">print(i)</code> en dessous : Python ne saura pas que cette ligne fait partie de la boucle.</div>`,
     defi:{type:"ecris", q:"Écris une boucle qui affiche les nombres de 1 à 5 (avec <code class='inl'>print</code>).",
       start:"# ta boucle ici\n",
       sol:"for i in range(1, 6):\n    print(i)",
@@ -943,10 +969,26 @@ EXA_API_KEY=sk-secret-1234</pre>
     <div class="callout c-case"><span class="lab">🧩 Cas vécu</span>
     Un agent lisait un fichier <code class="inl">.docx</code> comme du texte brut → charabia binaire (<code class="inl">PK\\x03\\x04...</code>) → zéro source réelle vue → il a inventé des concurrents de toutes pièces, avec assurance.</p>
     <div class="callout c-key"><span class="lab">🔑 La vraie leçon</span>
-    Le bug n'était PAS « pas assez de garde-fous anti-invention ». C'était un maillon de <b>lecture cassé EN AMONT</b> qui rendait tout garde-fou aval inopérant : rien de réel à vérifier, donc rien n'est jamais flaggé comme suspect.</div>`,
+    Le bug n'était PAS « pas assez de garde-fous anti-invention ». C'était un maillon de <b>lecture cassé EN AMONT</b> qui rendait tout garde-fou aval inopérant : rien de réel à vérifier, donc rien n'est jamais flaggé comme suspect.</div>
+    <div class="callout c-warn"><span class="lab">⚠️ Erreur à éviter</span>
+    Piège concret : tester ta correction seulement sur le cas qui a révélé le bug. Si tu répares la lecture d'un <code class="inl">.docx</code> mais ne vérifies pas aussi le <code class="inl">.pdf</code> ou le <code class="inl">.txt</code>, le même bug de lecture peut ressurgir ailleurs, invisible pour l'instant — jusqu'au prochain rapport inventé.</div>`,
     defi:{type:"quiz", q:"Un agent invente des concurrents qui n'existent pas dans son rapport. Le VRAI problème est le plus souvent…",
       opts:["Le modèle IA ment volontairement","Un garde-fou anti-invention manquant, à ajouter en fin de chaîne","Un maillon de lecture cassé en amont : l'agent n'a jamais vu de vraies données"], correct:2,
       expl:"Le modèle n'invente pas « par méchanceté » : il complète avec ce qu'il a. Ici, il n'avait RIEN de réel (lecture .docx cassée). Un garde-fou en aval n'aurait rien changé : rien à vérifier = rien n'est flaggé. Il fallait réparer le maillon le plus en amont, la lecture — pas le symptôme le plus visible."} },
+
+  { titre:"Cite mot pour mot, ne reformule pas",
+    lecon:`<span class="kicker" style="color:#0d9488">Sécurité — vécu dans Lightman</span>
+    <h2>Un prix qui change à chaque fois, sans nouvelle recherche</h2>
+    <p>Un même produit, cherché UNE SEULE fois sur le web, redonné 3 fois dans un même rapport : 6,99€ → 19,90€ → 9,90€. Aucune nouvelle recherche entre les trois.</p>
+    <div class="callout c-case"><span class="lab">🧩 Cas vécu</span>
+    Le modèle ne mentait pas exprès : il <b>reformulait de mémoire</b> à chaque fois, au lieu de citer littéralement la donnée déjà trouvée. Une reformulation « avec ses mots » d'un chiffre précis suffit à le déformer, même sans mauvaise intention.</div>
+    <div class="callout c-key"><span class="lab">🔑 Le réflexe</span>
+    Pour une donnée qui doit rester exacte (prix, date, citation), on <b>cite littéralement</b> la source trouvée — on ne la raconte jamais de mémoire, même approximativement.</div>
+    <div class="callout c-warn"><span class="lab">⚠️ Erreur à éviter</span>
+    Piège concret : le prix affiché la 1ʳᵉ fois SEMBLAIT correct — l'erreur ne se voit qu'en comparant plusieurs générations entre elles. Un seul passage ne suffit pas à détecter ce bug ; il faut soit forcer la citation exacte dans le code, soit comparer plusieurs sorties pour repérer une dérive.</div>`,
+    defi:{type:"quiz", q:"Un agent doit répéter un prix déjà trouvé sur le web dans son rapport. Le plus fiable est de…",
+      opts:["Le reformuler avec ses propres mots, pour que ce soit plus naturel","Le citer mot pour mot depuis la donnée trouvée, sans le reformuler","Redemander au modèle de deviner le prix"], correct:1,
+      expl:"Reformuler de mémoire un chiffre précis, c'est prendre le risque de le déformer sans même s'en rendre compte. Pour une donnée exacte, on cite littéralement la source — on ne la raconte pas avec ses propres mots."} },
 
   { titre:"Le moindre privilège",
     lecon:`<span class="kicker" style="color:#0d9488">Sécurité — vécu dans Lightman</span>
@@ -957,10 +999,13 @@ EXA_API_KEY=sk-secret-1234</pre>
     <div class="callout c-key"><span class="lab">🔑 Principe du moindre privilège</span>
     Un agent (ou une personne) ne doit avoir accès qu'à STRICTEMENT ce dont il a besoin, rien de plus. Une permission « oubliée ouverte » n'est jamais un détail — c'est une porte laissée entrouverte, prête à être franchie par erreur.</div>
     <div class="callout c-ana"><span class="lab">🧠 Analogie magasin</span>
-    Comme donner les clés du magasin ENTIER à un vendeur qui n'a besoin que de la caisse : ça « marche » tant qu'il ne se trompe jamais. Le jour où il se trompe (ou qu'on lui vole les clés), tout est exposé.</div>`,
-    defi:{type:"quiz", q:"Un dossier connecté « oublié ouvert » entre deux agents, c'est…",
-      opts:["Un détail sans importance tant que ça marche","Un vrai risque : la moindre erreur peut alors toucher un autre agent","Une fonctionnalité pratique à garder"], correct:1,
-      expl:"Le principe du moindre privilège : chaque agent ne doit voir que son propre dossier. Une permission oubliée ouverte n'est jamais « juste un détail » — c'est une porte laissée entrouverte, utilisable par erreur ou pire, exploitée."} },
+    Comme donner les clés du magasin ENTIER à un vendeur qui n'a besoin que de la caisse : ça « marche » tant qu'il ne se trompe jamais. Le jour où il se trompe (ou qu'on lui vole les clés), tout est exposé.</div>
+    <div class="callout c-warn"><span class="lab">⚠️ Erreur à éviter</span>
+    Piège concret : élargir un accès « temporairement, pour debug » et oublier de le refermer ensuite. Le risque n'est presque jamais l'ouverture volontaire au départ — c'est l'oubli de la refermer des semaines plus tard, une fois que plus personne n'y pense.</div>`,
+    defi:{type:"ecris", q:"Un agent Kaiba reçoit une consigne texte lui demandant de lire TOUS les dossiers du projet pour « mieux comprendre le contexte ». Explique en quelques lignes pourquoi FORBIDDEN_PATHS l'empêcherait quand même d'aller lire le dossier core/, même si sa consigne le lui demande.",
+      start:"# ta réponse ici\n",
+      sol:"FORBIDDEN_PATHS est une règle codée en dur, pas une simple consigne texte. Même si le prompt de Kaiba dit de lire tout le projet, le code vérifie CHAQUE accès fichier et bloque tout chemin dans core/ (ou frontend/, plugins/...), quoi qu'il soit demandé dans le texte. C'est la règle d'or vue dans le monde IA Agentique : un rail dans le code bat toujours une consigne au modèle. La consigne peut être ignorée ou mal interprétée ; le code, non.",
+      expl:"Le point clé : FORBIDDEN_PATHS agit AVANT même que le modèle ait fini de raisonner — c'est un filtre au niveau du code, pas une suggestion. Même un agent parfaitement bien intentionné ne peut pas franchir cette barrière, précisément parce que ce n'est pas lui qui décide."} },
 
   { titre:"Soft delete : jamais de perte de données",
     lecon:`<span class="kicker" style="color:#0d9488">Sécurité — principe architectural Lightman</span>
@@ -971,7 +1016,9 @@ EXA_API_KEY=sk-secret-1234</pre>
     <div class="callout c-key"><span class="lab">🔑 Le soft delete</span>
     Au lieu d'un <code class="inl">DELETE</code> réel et irréversible, on déplace ou on marque l'élément comme supprimé — il reste quelque part, récupérable. La suppression VRAIMENT définitive doit rester l'exception rare, jamais le comportement par défaut.</div>
     <div class="callout c-ana"><span class="lab">🧠 Analogie</span>
-    Comme la corbeille de ton ordinateur : « supprimer » un fichier l'envoie dans la corbeille (récupérable), pas directement à la destruction. « Vider la corbeille » est une action à part, rare et volontaire.</div>`,
+    Comme la corbeille de ton ordinateur : « supprimer » un fichier l'envoie dans la corbeille (récupérable), pas directement à la destruction. « Vider la corbeille » est une action à part, rare et volontaire.</div>
+    <div class="callout c-warn"><span class="lab">⚠️ Erreur à éviter</span>
+    Piège concret : un <code class="inl">_archive/</code> qui grossit sans jamais être documenté ni consultable n'est pas un vrai filet de sécurité. Si personne ne sait comment retrouver ou restaurer un élément précis, le soft delete n'est qu'un tas de données oubliées, pas une protection réelle.</div>`,
     defi:{type:"quiz", q:"Pourquoi un vrai système fait (presque) toujours du soft delete plutôt qu'une suppression définitive ?",
       opts:["Parce que c'est plus rapide à coder","Parce qu'une erreur humaine ou un bug reste réversible","Parce que ça prend moins de place disque"], correct:1,
       expl:"Le soft delete (déplacer vers une archive au lieu d'effacer) protège contre l'erreur humaine ET les bugs : rien n'est jamais perdu pour de vrai. La suppression définitive doit rester rare et volontaire, pas le réflexe par défaut."} }
@@ -992,7 +1039,9 @@ EXA_API_KEY=sk-secret-1234</pre>
     <div class="callout c-ana"><span class="lab">🧠 Analogie cuisine</span>
     Un chatbot te récite la recette. Un agent ouvre le frigo, goûte, ajuste le sel, et te sert le plat.</div>
     <div class="callout c-case"><span class="lab">🧩 Kaiba</span>
-    Ton agent business Kaiba fait ça : il reçoit « le marché des gourdes ? », planifie 3 étapes, appelle Exa (recherche), lit les résultats, et rédige.</div>`,
+    Ton agent business Kaiba fait ça : il reçoit « le marché des gourdes ? », planifie 3 étapes, appelle Exa (recherche), lit les résultats, et rédige.</div>
+    <div class="callout c-warn"><span class="lab">⚠️ Erreur à éviter</span>
+    Croire qu'ajouter des outils à un chatbot suffit à en faire un agent. Sans la BOUCLE (observer le résultat, décider de continuer ou corriger), même avec des outils disponibles, ce n'est qu'une action isolée exécutée à l'aveugle — jamais vérifiée.</div>`,
     defi:{type:"quiz", q:"La différence clé entre un chatbot et un agent ?",
       opts:["L'agent est plus poli","L'agent AGIT : il utilise des outils en boucle","Aucune"], correct:1,
       expl:"Un agent planifie → agit (outils) → observe → décide, en boucle. Un chatbot se contente de répondre."} },
@@ -1006,7 +1055,9 @@ EXA_API_KEY=sk-secret-1234</pre>
       <li>📄 <code class="inl">rediger_document</code> — produire un Word/Excel</li>
     </ul>
     <div class="callout c-key"><span class="lab">🔑 MCP</span>
-    Le standard qui branche un agent à ses outils s'appelle <b>MCP</b> (Model Context Protocol). Un autre, <b>A2A</b>, branche les agents entre eux. Cerveau = Mistral, yeux/mains = les outils.</div>`,
+    Le standard qui branche un agent à ses outils s'appelle <b>MCP</b> (Model Context Protocol). Un autre, <b>A2A</b>, branche les agents entre eux. Cerveau = Mistral, yeux/mains = les outils.</div>
+    <div class="callout c-warn"><span class="lab">⚠️ Erreur à éviter</span>
+    Penser qu'un agent « a » un outil dès qu'il est mentionné dans le prompt. Sans le vrai branchement technique dans le code (comme MCP), le modèle peut parler d'un outil qu'il ne peut PAS réellement appeler — et inventer un résultat à la place, sans prévenir.</div>`,
     defi:{type:"quiz", q:"Pourquoi Kaiba a besoin de l'outil search_web ?",
       opts:["Pour être poli","Parce que le modèle seul ne peut pas vérifier un fait réel","Pour colorer sa réponse"], correct:1,
       expl:"Le modèle raisonne mais n'a pas accès au web réel. L'outil search_web lui donne des faits vérifiables au lieu d'inventer."} },
@@ -1023,7 +1074,9 @@ EXA_API_KEY=sk-secret-1234</pre>
       <li>Demande vague → le code <b>stoppe</b> et fait poser une question</li>
     </ul>
     <div class="callout c-ana"><span class="lab">🧠 Entreprise</span>
-    Comme en gestion : la caisse qui REFUSE de vendre sous le prix de revient (rail codé) est plus fiable qu'une note « vendez pas à perte » scotchée au mur (vœu).</div>`,
+    Comme en gestion : la caisse qui REFUSE de vendre sous le prix de revient (rail codé) est plus fiable qu'une note « vendez pas à perte » scotchée au mur (vœu).</div>
+    <div class="callout c-warn"><span class="lab">⚠️ Erreur à éviter</span>
+    Croire qu'une règle répétée plusieurs fois, écrite en MAJUSCULES ou formulée « avec plus d'insistance » dans le prompt devient plus fiable. Ce n'est toujours qu'un vœu, quelle que soit la mise en forme. Seul un contrôle exécuté dans le code est une vraie garantie.</div>`,
     defi:{type:"quiz", q:"Tu veux GARANTIR un comportement d'agent. Le mieux ?",
       opts:["L'écrire dans le prompt et espérer","En faire un rail dans le CODE","Le répéter 3 fois au modèle"], correct:1,
       expl:"Forcer par le code > demander au modèle. Une consigne prompt est un vœu ; un rail codé est une garantie."} },
@@ -1039,10 +1092,42 @@ EXA_API_KEY=sk-secret-1234</pre>
 AGENTS_TOUJOURS_AGENTIQUES = {<span class="st">"dave"</span>, <span class="st">"nara"</span>, <span class="st">"kaiba"</span>}
 <span class="cm">#                                          ↑ ajouté</span></pre>
     <div class="callout c-key"><span class="lab">✅ Solution & leçon</span>
-    On force Kaiba à toujours passer par la boucle à outils. Après ça : il appelle Exa, ramène 16 sources réelles. <b>Leçon</b> : encore la règle d'or — le prompt ne suffisait pas, il fallait un rail dans le code.</div>`,
+    On force Kaiba à toujours passer par la boucle à outils. Après ça : il appelle Exa, ramène 16 sources réelles. <b>Leçon</b> : encore la règle d'or — le prompt ne suffisait pas, il fallait un rail dans le code.</div>
+    <div class="callout c-warn"><span class="lab">⚠️ Erreur à éviter</span>
+    Corriger CE cas précis (ajouter kaiba) sans se demander si d'autres agents ont le même trou. Après un fix ciblé, vérifie toujours la liste complète — pas seulement l'agent pris en flagrant délit.</div>`,
     defi:{type:"quiz", q:"Pourquoi le prompt « cherche sur le web » ne suffisait pas ?",
       opts:["Kaiba était fatigué","Le code ne lui donnait jamais accès à la boucle à outils","Exa était cassé"], correct:1,
-      expl:"Le routeur le mettait en réponse directe (sans outils). Tant que le CODE ne l'a pas forcé en mode agent, la consigne prompt restait un vœu. Rail codé = problème réglé."} }
+      expl:"Le routeur le mettait en réponse directe (sans outils). Tant que le CODE ne l'a pas forcé en mode agent, la consigne prompt restait un vœu. Rail codé = problème réglé."} },
+
+  { titre:"Écris le fix toi-même",
+    lecon:`<span class="kicker" style="color:#9333ea">IA Agentique — pratique</span>
+    <h2>À toi d'écrire le rail dans le code</h2>
+    <p>Tu as vu le bug Kaiba (niveau précédent) : un agent absent d'une liste, donc jamais dans la boucle à outils. Reproduis le fix toi-même, en JS cette fois.</p>
+    <div class="callout c-case"><span class="lab">🧩 Rappel du cas vécu</span>
+    Le vrai fix Lightman (en Python) : ajouter <code class="inl">"kaiba"</code> à <code class="inl">AGENTS_TOUJOURS_AGENTIQUES = {"dave", "nara"}</code>. Une seule ligne a suffi à forcer l'agent dans la boucle à outils.</p>
+    <div class="callout c-key"><span class="lab">🔑 Point clé</span>
+    Peu importe le langage (Python ou JS) : le principe est identique — une liste codée en dur qui force un comportement, pas une simple mention dans un prompt.</div>
+    <div class="callout c-warn"><span class="lab">⚠️ Erreur à éviter</span>
+    Ajouter <code class="inl">kaiba</code> seulement dans un COMMENTAIRE ou dans le texte affiché, sans le mettre réellement DANS le tableau. Seule une vraie modification du code change le comportement — écrire « il faut ajouter kaiba » en commentaire ne fait tourner rien différemment.</div>`,
+    defi:{type:"code", q:"Kaiba n'était pas dans AGENTS_TOUJOURS_AGENTIQUES, donc il n'avait jamais accès à la boucle à outils. Ajoute 'kaiba' dans le tableau pour reproduire le vrai fix.",
+      start:'<p id="r">?</p>\n<script>\n  const AGENTS_TOUJOURS_AGENTIQUES = ["dave", "nara"];\n  // ajoute "kaiba" dans le tableau ci-dessus, comme dans le vrai fix Lightman !\n\n  document.getElementById("r").textContent = AGENTS_TOUJOURS_AGENTIQUES.includes("kaiba")\n    ? "✅ Kaiba est bien dans la boucle à outils"\n    : "❌ Kaiba n\'est toujours pas agentique";\n<\/script>',
+      check:(v)=> /AGENTS_TOUJOURS_AGENTIQUES/.test(v) && /["']kaiba["']/i.test(v),
+      expl:"kaiba ajouté au tableau = exactement le fix réel : 1 ligne de code qui force l'agent à toujours passer par la boucle à outils. C'est ça, un rail codé — pas une consigne, une garantie."} },
+
+  { titre:"Cite mot pour mot, ne reformule pas",
+    lecon:`<span class="kicker" style="color:#9333ea">IA Agentique — vécu dans Lightman</span>
+    <h2>Reformuler, c'est déjà un risque</h2>
+    <p>Une autre application de la règle d'or (niveau 3), cette fois sur la FIABILITÉ d'une donnée précise plutôt que sur l'accès à un outil.</p>
+    <div class="callout c-case"><span class="lab">🧩 Cas vécu</span>
+    Un même prix produit, cherché UNE SEULE fois sur le web, redonné 3 fois dans le même rapport : 6,99€ → 19,90€ → 9,90€. Aucune nouvelle recherche entre les trois. Le modèle ne mentait pas : il reformulait <b>de mémoire</b> à chaque fois, au lieu de citer littéralement la donnée déjà trouvée.</div>
+    <div class="callout c-key"><span class="lab">🔑 Encore la règle d'or</span>
+    « Cite mot pour mot » ne peut pas rester un simple conseil dans le prompt — le vrai fix force la citation EXACTE par le code (comparer le texte généré à la source, refuser de sauvegarder en cas de divergence). Un modèle qui « promet » de citer fidèlement peut quand même dériver ; un contrôle codé, non.</div>
+    <div class="callout c-warn"><span class="lab">⚠️ Erreur à éviter</span>
+    Croire qu'un modèle qui a bien cité une donnée UNE fois le fera à chaque fois. Sans contrôle systématique (comparaison codée), la fiabilité n'est jamais garantie sur la durée — juste probable, ce qui n'est pas pareil.</div>`,
+    defi:{type:"ecris", q:"Explique en quelques lignes pourquoi 'cite mot pour mot' est plus fiable que 'reformule avec tes mots' quand un agent doit répéter une donnée précise (comme un prix), et pourquoi ça rejoint la règle d'or vue plus tôt dans ce monde.",
+      start:"# ta réponse ici\n",
+      sol:"Reformuler « avec ses mots » un chiffre précis, c'est laisser le modèle recréer la valeur de mémoire à chaque fois — et une petite dérive suffit à changer 6,99€ en 19,90€ sans que personne ne s'en aperçoive. Citer mot pour mot élimine ce risque : la valeur affichée est exactement celle trouvée, pas une reconstruction. Et comme pour AGENTS_TOUJOURS_AGENTIQUES, la vraie garantie n'est pas d'écrire « cite mot pour mot » dans le prompt (un vœu) : c'est de vérifier PAR LE CODE que le texte généré correspond exactement à la source, et de refuser de sauvegarder sinon.",
+      expl:"Même principe que le rail codé de Kaiba : une consigne seule, même bien intentionnée, peut dériver. Un contrôle exécuté dans le code — ici, comparer texte généré et source — est la seule vraie garantie."} }
  ]},
 
 ]};
