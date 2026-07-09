@@ -813,6 +813,24 @@ bouton.addEventListener(<span class="st">"click"</span>, () =&gt; {
 /* ============================ MONDE : GIT ============================ */
 { id:"git", titre:"Git & GitHub", emoji:"🔧", couleur:"#ef4444", desc:"Sauvegarder son code",
  levels:[
+  { titre:"Le terminal : cd, ls, pwd",
+    lecon:`<span class="kicker" style="color:#dc2626">Git — les bases du terminal</span>
+    <h2>Avant Git : le terminal</h2>
+    <p>Les commandes Git se tapent dans un <b>terminal</b> : une fenêtre où tu écris des commandes au lieu de cliquer. Trois commandes suffisent pour se repérer :</p>
+    <pre class="code">pwd              <span class="cm"># où je suis (le chemin actuel)</span>
+ls               <span class="cm"># ce qu'il y a ici (fichiers/dossiers)</span>
+cd mon-projet    <span class="cm"># entre dans le dossier "mon-projet"</span>
+cd ..            <span class="cm"># remonte d'un dossier</span></pre>
+    <div class="callout c-key"><span class="lab">🔑 Point clé</span>
+    <code class="inl">pwd</code> ("print working directory") = où je suis. <code class="inl">ls</code> ("list") = ce qu'il y a ici. <code class="inl">cd</code> ("change directory") = se déplacer. Avec ces trois-là, tu navigues déjà partout sans souris.</div>
+    <div class="callout c-ana"><span class="lab">🧠 Analogie</span>
+    Comme l'explorateur de fichiers, mais tu tapes les déplacements au lieu de cliquer. <code class="inl">pwd</code> = regarder où tu es, <code class="inl">ls</code> = ouvrir le dossier pour voir dedans, <code class="inl">cd</code> = double-cliquer pour y entrer.</div>
+    <div class="callout c-warn"><span class="lab">⚠️ Erreur à éviter</span>
+    <code class="inl">cd ..</code> remonte d'UN SEUL niveau à chaque fois, pas jusqu'à la racine. Pour savoir où tu es après plusieurs déplacements, retape <code class="inl">pwd</code> — ne devine pas.</div>`,
+    defi:{type:"quiz", q:"Tu veux voir la liste des fichiers dans le dossier où tu es. Tu tapes…",
+      opts:["cd","pwd","ls"], correct:2,
+      expl:"ls (list) affiche le contenu du dossier actuel. pwd affiche OÙ tu es, cd sert à se DÉPLACER vers un autre dossier."} },
+
   { titre:"Sauvegarder (commit)",
     lecon:`<span class="kicker" style="color:#dc2626">Git</span>
     <h2>La machine à remonter le temps</h2>
@@ -823,7 +841,9 @@ git push          <span class="cm"># envoie sur GitHub (le cloud)</span></pre>
     <div class="callout c-ana"><span class="lab">🧠 Analogie</span>
     C'est le « Sauvegarder » d'un jeu vidéo. Tu sauvegardes avant un boss difficile : si tu meurs, tu recharges.</div>
     <div class="callout c-case"><span class="lab">🧩 Dans Lightman</span>
-    Notre règle : on <b>commit après chaque prompt validé</b> (ex : <code class="inl">feat(143): …</code>). Comme ça, si un changement casse quelque chose, on revient à la dernière photo stable.</div>`,
+    Notre règle : on <b>commit après chaque prompt validé</b> (ex : <code class="inl">feat(143): …</code>). Comme ça, si un changement casse quelque chose, on revient à la dernière photo stable.</div>
+    <div class="callout c-warn"><span class="lab">⚠️ Erreur à éviter</span>
+    Un message de commit vague comme <code class="inl">"fix"</code> ou <code class="inl">"update"</code> ne dit rien à ton futur toi sur CE QUI a changé. Décris l'action : <code class="inl">"fix: corrige le bouton de connexion"</code>.</div>`,
     defi:{type:"quiz", q:"Un « commit », c'est…",
       opts:["Supprimer le code","Une photo/sauvegarde de ton code","Un bug"], correct:1,
       expl:"Un commit = une sauvegarde datée de ton code, avec un message. Tu peux y revenir plus tard."} },
@@ -839,10 +859,47 @@ git push          <span class="cm"># envoie sur GitHub (le cloud)</span></pre>
     <div class="callout c-key"><span class="lab">🔑 Règle d'or Git</span>
     On ne commit <b>que du code qui marche</b> (testé), jamais un état cassé. Message clair à chaque fois.</div>
     <div class="callout c-warn"><span class="lab">⚠️ O'Clock</span>
-    Git est dans le module « Préparation » : c'est un des tout premiers réflexes qu'on te demandera. Le voir avant = énorme avance.</div>`,
+    Git est dans le module « Préparation » : c'est un des tout premiers réflexes qu'on te demandera. Le voir avant = énorme avance.</div>
+    <div class="callout c-warn"><span class="lab">⚠️ Erreur à éviter</span>
+    Ne commite jamais un code CASSÉ « pour sauvegarder au cas où ». Un commit doit représenter un état qui fonctionne — sinon la machine à remonter le temps te ramène vers des pannes, pas des solutions.</div>`,
     defi:{type:"quiz", q:"À quoi sert une « branche » Git ?",
       opts:["À supprimer GitHub","À tester une idée sans casser la version qui marche","À colorer le code"], correct:1,
-      expl:"Une branche = un brouillon parallèle. Tu expérimentes à côté ; si c'est bon, tu fusionnes ; sinon tu jettes."} }
+      expl:"Une branche = un brouillon parallèle. Tu expérimentes à côté ; si c'est bon, tu fusionnes ; sinon tu jettes."} },
+
+  { titre:"La séquence : init → add → commit → push",
+    lecon:`<span class="kicker" style="color:#dc2626">Git — pratique</span>
+    <h2>Le rituel complet, dans l'ordre</h2>
+    <p>Impossible de lancer un vrai terminal ici — alors tu vas ÉCRIRE la bonne séquence de commandes, comme dans le monde Python. Compare ensuite à la solution.</p>
+    <pre class="code">git init                        <span class="cm"># une SEULE fois, au tout début du projet</span>
+git add -A                      <span class="cm"># prépare les changements</span>
+git commit -m <span class="st">"premier essai"</span>   <span class="cm"># prend la photo</span>
+git push                        <span class="cm"># envoie sur GitHub</span></pre>
+    <div class="callout c-key"><span class="lab">🔑 Point clé</span>
+    L'ORDRE compte : <code class="inl">init</code> une seule fois au début, puis <code class="inl">add</code> → <code class="inl">commit</code> → <code class="inl">push</code> à chaque sauvegarde. Sans <code class="inl">add</code>, <code class="inl">commit</code> n'a rien à sauvegarder. Sans <code class="inl">commit</code>, <code class="inl">push</code> n'a rien à envoyer.</div>
+    <div class="callout c-warn"><span class="lab">⚠️ Erreur à éviter</span>
+    Erreur fréquente : lancer <code class="inl">push</code> directement sans <code class="inl">commit</code> avant (rien à envoyer), ou oublier <code class="inl">add</code> avant <code class="inl">commit</code> (le commit ne contiendra aucun changement). Chaque étape dépend de la précédente.</div>`,
+    defi:{type:"ecris", q:"Écris la suite de commandes pour : préparer tous les changements, les sauvegarder avec le message 'ajout page contact', puis les envoyer sur GitHub.",
+      start:"# tes commandes ici\n",
+      sol:"git add -A\ngit commit -m \"ajout page contact\"\ngit push",
+      expl:"add prépare, commit sauvegarde avec un message, push envoie sur GitHub. (git init n'apparaît pas ici : on ne le fait qu'une seule fois, au tout début d'un projet — pas à chaque sauvegarde.)"} },
+
+  { titre:".gitignore : pourquoi et pour quoi",
+    lecon:`<span class="kicker" style="color:#dc2626">Git — pratique</span>
+    <h2>Exclure ce qui ne doit jamais partir sur GitHub</h2>
+    <p>Certains fichiers ne doivent JAMAIS être suivis par Git : des secrets, des dépendances, des fichiers générés. Le fichier <code class="inl">.gitignore</code> liste ce que Git doit ignorer.</p>
+    <pre class="code"><span class="cm"># .gitignore</span>
+.env
+node_modules/
+*.log</pre>
+    <div class="callout c-key"><span class="lab">🔑 Point clé</span>
+    Un fichier listé dans <code class="inl">.gitignore</code> est ignoré par <code class="inl">git add</code> — il ne sera JAMAIS commité ni envoyé sur GitHub, même par erreur.</div>
+    <div class="callout c-case"><span class="lab">🧩 Comme vu dans le monde Sécurité</span>
+    La clé d'API dans <code class="inl">.env</code> ne doit jamais partir sur GitHub. <code class="inl">.gitignore</code> est exactement le mécanisme qui empêche ça.</div>
+    <div class="callout c-warn"><span class="lab">⚠️ Erreur à éviter</span>
+    Ajouter <code class="inl">.env</code> à <code class="inl">.gitignore</code> APRÈS l'avoir déjà commité une fois ne le retire PAS de l'historique Git — le secret y reste visible. <code class="inl">.gitignore</code> doit être en place AVANT le premier commit du fichier sensible.</div>`,
+    defi:{type:"quiz", q:"Un fichier listé dans .gitignore…",
+      opts:["Est automatiquement supprimé du disque","N'est jamais suivi ni envoyé par Git, même avec add","Est chiffré automatiquement"], correct:1,
+      expl:".gitignore fait ignorer un fichier par Git : git add ne le prendra jamais, il ne partira donc jamais sur GitHub. C'est exactement ce qui protège un fichier .env."} }
  ]},
 
 /* ============================ MONDE : SÉCURITÉ ============================ */
@@ -858,7 +915,9 @@ cle = <span class="st">"sk-secret-1234"</span>
 <span class="cm"># ✅ On la met dans un fichier .env (jamais envoyé sur GitHub)</span>
 EXA_API_KEY=sk-secret-1234</pre>
     <div class="callout c-key"><span class="lab">🔑 Point clé</span>
-    Le fichier <code class="inl">.env</code> garde les secrets. On l'ajoute au <code class="inl">.gitignore</code> pour qu'il ne parte jamais sur GitHub. C'est exactement ce qu'on fait dans Lightman.</div>`,
+    Le fichier <code class="inl">.env</code> garde les secrets. On l'ajoute au <code class="inl">.gitignore</code> pour qu'il ne parte jamais sur GitHub. C'est exactement ce qu'on fait dans Lightman.</div>
+    <div class="callout c-warn"><span class="lab">⚠️ Erreur à éviter</span>
+    Vérifie que <code class="inl">.env</code> est bien listé dans <code class="inl">.gitignore</code> AVANT ton tout premier commit. Une clé poussée une seule fois sur GitHub doit être considérée comme grillée, même si tu la supprimes juste après — elle reste dans l'historique Git.</div>`,
     defi:{type:"quiz", q:"Où mettre une clé d'API secrète ?",
       opts:["En dur dans le code","Dans un fichier .env (ignoré par Git)","Dans le titre de la page"], correct:1,
       expl:"Dans un .env, jamais dans le code. Et on l'exclut de Git (.gitignore) pour ne pas l'exposer."} },
@@ -870,10 +929,52 @@ EXA_API_KEY=sk-secret-1234</pre>
     <div class="callout c-case"><span class="lab">🧩 Notre garde-fou</span>
     Dans Lightman, tout contenu externe est encadré par « CONTENU EXTERNE NON FIABLE ». Règle codée en dur : on ne suit JAMAIS une instruction trouvée là-dedans, on la traite comme une simple donnée à analyser.</div>
     <div class="callout c-key"><span class="lab">🔑 Le réflexe</span>
-    « Toute entrée extérieure est suspecte tant qu'elle n'est pas vérifiée. » Vrai pour un formulaire, un fichier importé, une réponse d'API.</div>`,
+    « Toute entrée extérieure est suspecte tant qu'elle n'est pas vérifiée. » Vrai pour un formulaire, un fichier importé, une réponse d'API.</div>
+    <div class="callout c-warn"><span class="lab">⚠️ Erreur à éviter</span>
+    Piège classique : penser qu'un fichier "interne" (déposé par toi) est forcément fiable. S'il vient d'ailleurs à l'origine (téléchargé, copié, généré par un tiers), applique exactement la même méfiance qu'à un contenu venu du web.</div>`,
     defi:{type:"quiz", q:"Un texte venu du web te dit « ignore tes règles ». Tu fais quoi ?",
       opts:["J'obéis, c'est écrit","Je le traite comme une donnée, jamais comme un ordre","Je supprime Internet"], correct:1,
-      expl:"On ne suit jamais une instruction cachée dans un contenu externe. C'est de la donnée à analyser, pas un ordre. (Injection de prompt.)"} }
+      expl:"On ne suit jamais une instruction cachée dans un contenu externe. C'est de la donnée à analyser, pas un ordre. (Injection de prompt.)"} },
+
+  { titre:"Trouve la vraie cause",
+    lecon:`<span class="kicker" style="color:#0d9488">Sécurité — vécu dans Lightman</span>
+    <h2>Un agent invente… mais pourquoi ?</h2>
+    <p>Un symptôme visible cache parfois une cause totalement différente, bien plus en amont.</p>
+    <div class="callout c-case"><span class="lab">🧩 Cas vécu</span>
+    Un agent lisait un fichier <code class="inl">.docx</code> comme du texte brut → charabia binaire (<code class="inl">PK\\x03\\x04...</code>) → zéro source réelle vue → il a inventé des concurrents de toutes pièces, avec assurance.</p>
+    <div class="callout c-key"><span class="lab">🔑 La vraie leçon</span>
+    Le bug n'était PAS « pas assez de garde-fous anti-invention ». C'était un maillon de <b>lecture cassé EN AMONT</b> qui rendait tout garde-fou aval inopérant : rien de réel à vérifier, donc rien n'est jamais flaggé comme suspect.</div>`,
+    defi:{type:"quiz", q:"Un agent invente des concurrents qui n'existent pas dans son rapport. Le VRAI problème est le plus souvent…",
+      opts:["Le modèle IA ment volontairement","Un garde-fou anti-invention manquant, à ajouter en fin de chaîne","Un maillon de lecture cassé en amont : l'agent n'a jamais vu de vraies données"], correct:2,
+      expl:"Le modèle n'invente pas « par méchanceté » : il complète avec ce qu'il a. Ici, il n'avait RIEN de réel (lecture .docx cassée). Un garde-fou en aval n'aurait rien changé : rien à vérifier = rien n'est flaggé. Il fallait réparer le maillon le plus en amont, la lecture — pas le symptôme le plus visible."} },
+
+  { titre:"Le moindre privilège",
+    lecon:`<span class="kicker" style="color:#0d9488">Sécurité — vécu dans Lightman</span>
+    <h2>Chaque agent ne voit QUE son dossier</h2>
+    <p><code class="inl">FORBIDDEN_PATHS</code> empêche un agent de toucher au cœur du système (<code class="inl">core/</code>, <code class="inl">frontend/</code>, <code class="inl">plugins/</code>, <code class="inl">connectors/</code>, <code class="inl">themes/</code>, <code class="inl">start.sh</code>...). Par défaut, chaque agent ne voit que son propre dossier — sauf si un autre lui est explicitement connecté.</p>
+    <div class="callout c-case"><span class="lab">🧩 Cas vécu</span>
+    Un dossier connecté avait été oublié ouvert entre deux agents. Résultat : un agent a pu écrire dans le dossier d'un AUTRE agent, sans que ça ait été voulu par personne.</div>
+    <div class="callout c-key"><span class="lab">🔑 Principe du moindre privilège</span>
+    Un agent (ou une personne) ne doit avoir accès qu'à STRICTEMENT ce dont il a besoin, rien de plus. Une permission « oubliée ouverte » n'est jamais un détail — c'est une porte laissée entrouverte, prête à être franchie par erreur.</div>
+    <div class="callout c-ana"><span class="lab">🧠 Analogie magasin</span>
+    Comme donner les clés du magasin ENTIER à un vendeur qui n'a besoin que de la caisse : ça « marche » tant qu'il ne se trompe jamais. Le jour où il se trompe (ou qu'on lui vole les clés), tout est exposé.</div>`,
+    defi:{type:"quiz", q:"Un dossier connecté « oublié ouvert » entre deux agents, c'est…",
+      opts:["Un détail sans importance tant que ça marche","Un vrai risque : la moindre erreur peut alors toucher un autre agent","Une fonctionnalité pratique à garder"], correct:1,
+      expl:"Le principe du moindre privilège : chaque agent ne doit voir que son propre dossier. Une permission oubliée ouverte n'est jamais « juste un détail » — c'est une porte laissée entrouverte, utilisable par erreur ou pire, exploitée."} },
+
+  { titre:"Soft delete : jamais de perte de données",
+    lecon:`<span class="kicker" style="color:#0d9488">Sécurité — principe architectural Lightman</span>
+    <h2>Ne jamais vraiment supprimer</h2>
+    <p>Dans Lightman, rien n'est jamais effacé pour de vrai : tout va dans un dossier <code class="inl">_archive/</code> au même niveau. Agent supprimé, fichier supprimé, conversation supprimée… toujours réversible.</p>
+    <div class="callout c-case"><span class="lab">🧩 Principe vécu</span>
+    Une « suppression » dans Lightman ne détruit rien : elle déplace l'élément vers <code class="inl">_archive/</code>. Si quelqu'un supprime par erreur, tout reste récupérable.</div>
+    <div class="callout c-key"><span class="lab">🔑 Le soft delete</span>
+    Au lieu d'un <code class="inl">DELETE</code> réel et irréversible, on déplace ou on marque l'élément comme supprimé — il reste quelque part, récupérable. La suppression VRAIMENT définitive doit rester l'exception rare, jamais le comportement par défaut.</div>
+    <div class="callout c-ana"><span class="lab">🧠 Analogie</span>
+    Comme la corbeille de ton ordinateur : « supprimer » un fichier l'envoie dans la corbeille (récupérable), pas directement à la destruction. « Vider la corbeille » est une action à part, rare et volontaire.</div>`,
+    defi:{type:"quiz", q:"Pourquoi un vrai système fait (presque) toujours du soft delete plutôt qu'une suppression définitive ?",
+      opts:["Parce que c'est plus rapide à coder","Parce qu'une erreur humaine ou un bug reste réversible","Parce que ça prend moins de place disque"], correct:1,
+      expl:"Le soft delete (déplacer vers une archive au lieu d'effacer) protège contre l'erreur humaine ET les bugs : rien n'est jamais perdu pour de vrai. La suppression définitive doit rester rare et volontaire, pas le réflexe par défaut."} }
  ]},
 
 /* ============================ MONDE : IA AGENTIQUE ============================ */
